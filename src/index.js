@@ -1,14 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Login from './Login';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Contacto from './Contacto';
-import Todos from './Todos';
 import App from './App';
-import LoginOk from './LoginOk';
-import NotFound from './NotFound';
 import DetalleLibro from './DetalleLibro';
 import AltaLibro from './AltaLibro';
 
@@ -17,14 +12,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/detalle" element={<DetalleLibro />} />
+        <Route path="/books/:id" element={<DetalleLibro />} />
         <Route path="/alta" element={<AltaLibro />} />
         <Route path="/" element={<App />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/loginOk" element={<LoginOk />} />
-        <Route path="/todos" element={<Todos />} />
-        <Route path="/contacto" element={<Contacto />} />
-        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

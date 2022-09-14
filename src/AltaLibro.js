@@ -19,7 +19,7 @@ function AltaLibro() {
     }
 
     function guardarDatosLibro() {
-        fetch("http://localhost:3500/book", {
+        fetch("http://localhost:3500/books", {
             method: "POST",
             body: JSON.stringify(datosDelLibro),
             headers: {"Content-type": "application/json; charset=UTF-8"}
