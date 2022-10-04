@@ -1,7 +1,14 @@
+import { Link } from "react-router-dom"
+
 function App() {
 
     return (
-        <p>Bienvenidos a mi pagina web</p>
+        <>
+        <h1>Welcome to my webpage!! =D</h1>
+        <Link to="/books/create">Create book</Link><br/>
+        <Link to="/authors/create">Create author</Link><br/>
+        <Link to="/books">Booklist</Link>
+        </>
     )
 }
 
