@@ -1,11 +1,9 @@
-import { Typography } from "@mui/material";
+import { MenuItem, Typography, TextField, Button, Box } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
-import { TextField, Button } from "@mui/material";
 
 function CreateBookView() {
-  const [book, setBook] = useState({});
   const [authors, setAuthors] = useState([]);
   const { handleSubmit, reset, control } = useForm();
 
@@ -13,22 +11,12 @@ function CreateBookView() {
     fetch(`http://localhost:3500/authors/`)
       .then((response) => response.json())
       .then((a) => {
-        if (a[0]) {
-          setBook({ ...book, authorId: a[0].id });
-        }
         setAuthors(a);
       });
   }, []);
 
-  function saveAuthorId(event) {
-    const newAuthorId = {
-      ...book,
-      authorId: authors[event.target.selectedIndex].id,
-    };
-    setBook(newAuthorId);
-  }
-
   function postBook(book) {
+    console.log(book)
     fetch("http://localhost:3500/books", {
       method: "POST",
       body: JSON.stringify(book),
@@ -42,12 +30,20 @@ function CreateBookView() {
       });
   }
 
+  /*<Box
+    component="form"
+    sx={{ display: "flex", flexDirection: "column" }}
+  >*/
+
   return (
-    <form onSubmit={handleSubmit(postBook)}>
+    <Box
+      component="form" onSubmit={handleSubmit(postBook)}
+      sx={{ display: "flex", flexDirection: "column", maxWidth: "35%" }}>
       <Typography variant="h5">Book:</Typography>
       <Controller
         name="title"
         control={control}
+        defaultValue={""}
         rules={{
           required: true,
         }}
@@ -55,7 +51,6 @@ function CreateBookView() {
           <TextField
             onChange={onChange}
             value={value}
-            defaultValue={""}
             label="Title"
             error={error !== undefined}
             helperText={error ? "Este campo es requerido" : ""}
@@ -65,47 +60,58 @@ function CreateBookView() {
       <Controller
         name="numberOfPages"
         control={control}
+        defaultValue={""}
         rules={{
           required: true,
         }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
+            type="number"
             onChange={onChange}
             value={value}
-            defaultValue={""}
             label="Number of pages"
             error={error !== undefined}
             helperText={error ? "Este campo es requerido" : ""}
           />
         )}
       />
-      <br />
-      <label htmlFor="authors">
-        <u>
-          <b>Select author:</b>
-        </u>{" "}
-      </label>
-      <select name="authors" id="authors" onChange={saveAuthorId}>
-        {authors.map((author) => (
-          <option value={authors.id} key={author.name}>
-            {author.name}
-          </option>
-        ))}
-      </select>
-      <br />
-      <Button type="submit" variant="contained">
-        Save
-      </Button>
-      <Button
-        onClick={() => reset({ title: "", nofpages: "" })}
-        variant={"outlined"}
-      >
-        Reset
-      </Button>
-      <br />
-      <br />
+      <Controller
+        name="authorId"
+        control={control}
+        defaultValue={null}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            select
+            label="Choose author:"
+            onChange={onChange}
+            value={value}
+            error={error !== undefined}
+            helperText={error ? "Este campo es requerido" : ""}>
+            {authors.map((author) => (
+              <MenuItem value={author.id} key={author.name}>
+                {author.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
+      />
+      <Box
+        sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "5px" }}>
+        <Button type="submit" variant="contained">
+          Save
+        </Button>
+        <Button
+          onClick={() => reset()}
+          variant={"outlined"}
+        >
+          Reset
+        </Button>
+      </Box>
       <Link to="/">Homepage</Link>
-    </form>
+    </Box>
   );
 }
 
