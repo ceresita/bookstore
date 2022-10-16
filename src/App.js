@@ -1,100 +1,87 @@
-import { Link } from "react-router-dom"
-import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material/"
-import MenuIcon from "@mui/icons-material/Menu";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import LibraryBooksSharpIcon from "@mui/icons-material/LibraryBooksSharp";
+import GroupsSharpIcon from "@mui/icons-material/GroupsSharp";
+import { Link } from "react-router-dom";
+import BookView from "./BookView";
+import CreateBookView from "./CreateBookView";
+import CreateAuthorView from "./CreateAuthorView";
+import AuthorView from "./AuthorView";
+import BookListView from "./BookListView";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+const drawerWidth = 240;
 
-    const drawer = (
-        <div>
-            <Toolbar />
-            <Divider />
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        >
+          <Toolbar>
+            <Typography variant="h6" noWrap component="div">
+              Library
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+        >
+          <Toolbar />
+          <Box sx={{ overflow: "auto" }}>
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+              <ListItem key="Books" disablePadding>
+                <ListItemButton component={Link} to="/books">
+                  <ListItemIcon>
+                    <LibraryBooksSharpIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Books" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem key="Authors" disablePadding>
+                <ListItemButton component={Link} to="/authors/create">
+                  <ListItemIcon>
+                    <GroupsSharpIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Authors" />
+                </ListItemButton>
+              </ListItem>
             </List>
-            <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </div>
-    );
-
-    const container = window !== undefined ? () => window().document.body : undefined;
-
-    return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                sx={{
-                    width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    ml: { sm: `${drawerWidth}px` },
-                }}
-            >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Responsive drawer
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Box
-                component="nav"
-                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-                aria-label="mailbox folders"
-            >
-                <Drawer
-                    container={container}
-                    variant="temporary"
-                    open={mobileOpen}
-                    onClose={handleDrawerToggle}
-                    ModalProps={{
-                        keepMounted: true,
-                    }}
-                    sx={{
-                        display: { xs: 'block', sm: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                >
-                    {drawer}
-                </Drawer>
-                <Drawer
-                    variant="permanent"
-                    sx={{
-                        display: { xs: 'none', sm: 'block' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                    open
-                >
-                    {drawer}
-                </Drawer>
-            </Box>
+          </Box>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <Toolbar />
+          <Routes>
+            <Route path="/books" element={<BookListView />} />
+            <Route path="/books/:id" element={<BookView />} />
+            <Route path="/books/create" element={<CreateBookView />} />
+            <Route path="/" element={<BookListView />} />
+            <Route path="/authors/create" element={<CreateAuthorView />} />
+            <Route path="/authors/:id" element={<AuthorView />} />
+          </Routes>
         </Box>
-    )
+      </Box>
+    </BrowserRouter>
+  );
 }
-export default App;

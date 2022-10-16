@@ -1,6 +1,5 @@
 import { MenuItem, Typography, TextField, Button, Box } from "@mui/material";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
 function CreateBookView() {
@@ -31,8 +30,10 @@ function CreateBookView() {
 
   return (
     <Box
-      component="form" onSubmit={handleSubmit(postBook)}
-      sx={{ display: "flex", flexDirection: "column", maxWidth: "35%" }}>
+      component="form"
+      onSubmit={handleSubmit(postBook)}
+      sx={{ display: "flex", flexDirection: "column", maxWidth: "35%" }}
+    >
       <Typography variant="h6">Book:</Typography>
       <Controller
         name="title"
@@ -83,7 +84,8 @@ function CreateBookView() {
             onChange={onChange}
             value={value}
             error={error !== undefined}
-            helperText={error ? "Este campo es requerido" : ""}>
+            helperText={error ? "Este campo es requerido" : ""}
+          >
             {authors.map((author) => (
               <MenuItem value={author.id} key={author.name}>
                 {author.name}
@@ -110,18 +112,20 @@ function CreateBookView() {
         )}
       />
       <Box
-        sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "5px" }}>
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          margin: "5px",
+        }}
+      >
         <Button type="submit" variant="contained">
           Save
         </Button>
-        <Button
-          onClick={() => reset()}
-          variant={"outlined"}
-        >
+        <Button onClick={() => reset()} variant={"outlined"}>
           Reset
         </Button>
       </Box>
-      <Link to="/">Homepage</Link>
     </Box>
   );
 }

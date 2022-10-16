@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { TextField, Button, Box, Typography } from "@mui/material";
 
@@ -19,12 +18,12 @@ function CreateAuthorView() {
       });
   }
 
-
-
   return (
     <Box
-      component="form" onSubmit={handleSubmit(postAuthor)}
-      sx={{ display: "flex", flexDirection: "column", maxWidth: "15%" }}>
+      component="form"
+      onSubmit={handleSubmit(postAuthor)}
+      sx={{ display: "flex", flexDirection: "column", maxWidth: "15%" }}
+    >
       <Typography variant="h6">Author:</Typography>
       <Controller
         name="name"
@@ -46,21 +45,23 @@ function CreateAuthorView() {
       />
 
       <Box
-        sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "5px" }}>
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          margin: "5px",
+        }}
+      >
         <Button type="submit" variant="contained">
           Create
         </Button>
-        <Button
-          onClick={() => reset({ name: "" })}
-          variant={"outlined"}
-        >
+        <Button onClick={() => reset({ name: "" })} variant={"outlined"}>
           Reset
         </Button>
       </Box>
       <Box
-        sx={{ display: "flex", flexDirection: "row", marginTop: "20px" }}>
-        <Link to="/">Homepage</Link>
-      </Box>
+        sx={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
+      ></Box>
     </Box>
   );
 }
