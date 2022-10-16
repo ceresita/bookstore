@@ -16,7 +16,6 @@ function CreateBookView() {
   }, []);
 
   function postBook(book) {
-    console.log(book)
     fetch("http://localhost:3500/books", {
       method: "POST",
       body: JSON.stringify(book),
@@ -30,16 +29,11 @@ function CreateBookView() {
       });
   }
 
-  /*<Box
-    component="form"
-    sx={{ display: "flex", flexDirection: "column" }}
-  >*/
-
   return (
     <Box
       component="form" onSubmit={handleSubmit(postBook)}
       sx={{ display: "flex", flexDirection: "column", maxWidth: "35%" }}>
-      <Typography variant="h5">Book:</Typography>
+      <Typography variant="h6">Book:</Typography>
       <Controller
         name="title"
         control={control}
@@ -96,6 +90,23 @@ function CreateBookView() {
               </MenuItem>
             ))}
           </TextField>
+        )}
+      />
+      <Controller
+        name="avatarUrl"
+        control={control}
+        defaultValue={""}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            onChange={onChange}
+            value={value}
+            label="Avatar URL"
+            error={error !== undefined}
+            helperText={error ? "Este campo es requerido" : ""}
+          />
         )}
       />
       <Box
