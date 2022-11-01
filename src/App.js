@@ -13,18 +13,19 @@ import ListItemText from "@mui/material/ListItemText";
 import LibraryBooksSharpIcon from "@mui/icons-material/LibraryBooksSharp";
 import GroupsSharpIcon from "@mui/icons-material/GroupsSharp";
 import { Link } from "react-router-dom";
-import BookView from "./BookView";
 import CreateBookView from "./CreateBookView";
 import CreateAuthorView from "./CreateAuthorView";
-import AuthorView from "./AuthorView";
 import BookListView from "./BookListView";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { blue } from '@mui/material/colors';
+import { blue } from "@mui/material/colors";
 import AuthorsListView from "./AuthorsListView";
+import { useTheme } from "@mui/material/styles";
 
 const drawerWidth = 240;
 
 export default function App() {
+  const theme = useTheme();
+
   return (
     <BrowserRouter>
       <Box sx={{ display: "flex" }}>
@@ -33,7 +34,7 @@ export default function App() {
           position="fixed"
           sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
-          <Toolbar>
+          <Toolbar sx={{ backgroundColor: theme.palette.primary.main }}>
             <Typography variant="h6" noWrap component="div">
               Library
             </Typography>
@@ -56,7 +57,9 @@ export default function App() {
               <ListItem key="Books" disablePadding>
                 <ListItemButton component={Link} to="/books">
                   <ListItemIcon>
-                    <LibraryBooksSharpIcon sx={{color: blue[600]}}/>
+                    <LibraryBooksSharpIcon
+                      sx={{ color: theme.palette.primary.light }}
+                    />
                   </ListItemIcon>
                   <ListItemText primary="Books" />
                 </ListItemButton>
@@ -64,7 +67,9 @@ export default function App() {
               <ListItem key="Authors" disablePadding>
                 <ListItemButton component={Link} to="/authors/">
                   <ListItemIcon>
-                    <GroupsSharpIcon sx={{color: blue[600]}}/>
+                    <GroupsSharpIcon
+                      sx={{ color: theme.palette.primary.light }}
+                    />
                   </ListItemIcon>
                   <ListItemText primary="Authors" />
                 </ListItemButton>
@@ -76,11 +81,9 @@ export default function App() {
           <Toolbar />
           <Routes>
             <Route path="/books" element={<BookListView />} />
-            <Route path="/books/:id" element={<BookView />} />
             <Route path="/books/create" element={<CreateBookView />} />
             <Route path="/" element={<BookListView />} />
             <Route path="/authors/create" element={<CreateAuthorView />} />
-            <Route path="/authors/:id" element={<AuthorView />} />
             <Route path="/authors/" element={<AuthorsListView />} />
           </Routes>
         </Box>
