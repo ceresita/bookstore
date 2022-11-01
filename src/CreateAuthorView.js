@@ -1,8 +1,10 @@
 import { Controller, useForm } from "react-hook-form";
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { useState } from 'react';
+import { TextField, Button, Box, Typography, Alert, Stack } from "@mui/material";
 
 function CreateAuthorView() {
   const { handleSubmit, reset, control } = useForm();
+  const [savedSuccesfully, setSavedSuccesfully] = useState(false);
 
   function postAuthor(author) {
     fetch("http://localhost:3500/authors", {
@@ -10,19 +12,16 @@ function CreateAuthorView() {
       body: JSON.stringify(author),
       headers: { "Content-type": "application/json; charset=UTF-8" },
     })
-      .then(() =>
-        alert("Congratulations. Your author has been succesfully created")
-      )
-      .catch((e) => {
-        alert("La re cagaste pa");
+      .then(() => {
+        setSavedSuccesfully(true)
       });
   }
 
-  return (
+  const authorView = <>
     <Box
       component="form"
       onSubmit={handleSubmit(postAuthor)}
-      sx={{ display: "flex", flexDirection: "column", maxWidth: "15%" }}
+      sx={{ display: "flex", flexDirection: "column", maxWidth: "27%" }}
     >
       <Typography variant="h6">Author:</Typography>
       <Controller
@@ -34,6 +33,7 @@ function CreateAuthorView() {
         }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
+            sx={{ maxWidth: "75%" }}
             onChange={onChange}
             value={value}
             defaultValue={""}
@@ -43,13 +43,12 @@ function CreateAuthorView() {
           />
         )}
       />
-
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           justifyContent: "flex-end",
-          margin: "5px",
+          marginRight: "88px",
         }}
       >
         <Button type="submit" variant="contained">
@@ -59,9 +58,17 @@ function CreateAuthorView() {
           Reset
         </Button>
       </Box>
-      <Box
-        sx={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
-      ></Box>
+    </Box>
+  </>
+
+  return savedSuccesfully == false ? (
+    authorView
+  ) : (
+    <Box>
+      {authorView}
+      <Stack sx={{ width: '30%' }} spacing={2} marginTop="15px">
+        <Alert variant="outlined" severity="success">Your author has been succesfully created</Alert>
+      </Stack>
     </Box>
   );
 }

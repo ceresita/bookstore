@@ -10,6 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LibraryBooksSharpIcon from "@mui/icons-material/LibraryBooksSharp";
 
 function BookListView() {
   const [books, setBooks] = useState([]);
@@ -18,7 +19,7 @@ function BookListView() {
     fetch(`http://localhost:3500/books/`)
       .then((response) => response.json())
       .then((books) => {
-        setBooks(books);
+        setBooks(books)
       });
   }
 
@@ -47,7 +48,10 @@ function BookListView() {
             }
           >
             <ListItemAvatar>
-              <Avatar src={book.avatarUrl} />
+              <Avatar src={book.avatarUrl}>
+                <LibraryBooksSharpIcon />
+              </Avatar>
+
             </ListItemAvatar>
             <ListItemText primary={book.title} />
           </ListItem>
@@ -59,7 +63,7 @@ function BookListView() {
       <Button variant="contained" component={Link} to="/books/create">
         Add a new book
       </Button>
-      <p>Sry pa, no hay libros</p>
+      <h4>There's no books to show</h4>
     </>
   );
 }

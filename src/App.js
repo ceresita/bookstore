@@ -19,6 +19,8 @@ import CreateAuthorView from "./CreateAuthorView";
 import AuthorView from "./AuthorView";
 import BookListView from "./BookListView";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { blue } from '@mui/material/colors';
+import AuthorsListView from "./AuthorsListView";
 
 const drawerWidth = 240;
 
@@ -54,15 +56,15 @@ export default function App() {
               <ListItem key="Books" disablePadding>
                 <ListItemButton component={Link} to="/books">
                   <ListItemIcon>
-                    <LibraryBooksSharpIcon />
+                    <LibraryBooksSharpIcon sx={{color: blue[600]}}/>
                   </ListItemIcon>
                   <ListItemText primary="Books" />
                 </ListItemButton>
               </ListItem>
               <ListItem key="Authors" disablePadding>
-                <ListItemButton component={Link} to="/authors/create">
+                <ListItemButton component={Link} to="/authors/">
                   <ListItemIcon>
-                    <GroupsSharpIcon />
+                    <GroupsSharpIcon sx={{color: blue[600]}}/>
                   </ListItemIcon>
                   <ListItemText primary="Authors" />
                 </ListItemButton>
@@ -79,6 +81,7 @@ export default function App() {
             <Route path="/" element={<BookListView />} />
             <Route path="/authors/create" element={<CreateAuthorView />} />
             <Route path="/authors/:id" element={<AuthorView />} />
+            <Route path="/authors/" element={<AuthorsListView />} />
           </Routes>
         </Box>
       </Box>

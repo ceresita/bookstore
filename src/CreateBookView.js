@@ -1,10 +1,11 @@
-import { MenuItem, Typography, TextField, Button, Box } from "@mui/material";
+import { MenuItem, Typography, TextField, Button, Box, Stack, Alert } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 function CreateBookView() {
   const [authors, setAuthors] = useState([]);
   const { handleSubmit, reset, control } = useForm();
+  const [savedSuccesfully, setSavedSuccesfully] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:3500/authors/`)
@@ -21,14 +22,11 @@ function CreateBookView() {
       headers: { "Content-type": "application/json; charset=UTF-8" },
     })
       .then(() =>
-        alert("Congratulations. Your book has been succesfully created")
+        setSavedSuccesfully(true)
       )
-      .catch((e) => {
-        alert("La re cagaste pa");
-      });
   }
 
-  return (
+  const bookView = <>
     <Box
       component="form"
       onSubmit={handleSubmit(postBook)}
@@ -99,15 +97,13 @@ function CreateBookView() {
         control={control}
         defaultValue={""}
         rules={{
-          required: true,
+          required: false,
         }}
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
+        render={({ field: { onChange, value }}) => (
           <TextField
             onChange={onChange}
             value={value}
             label="Avatar URL"
-            error={error !== undefined}
-            helperText={error ? "Este campo es requerido" : ""}
           />
         )}
       />
@@ -127,7 +123,18 @@ function CreateBookView() {
         </Button>
       </Box>
     </Box>
-  );
+  </>
+
+  return savedSuccesfully == false ? (
+    bookView
+  ) : (
+    <Box>
+      {bookView}
+      <Stack sx={{ width: '30%' }} spacing={2} marginTop="15px">
+        <Alert variant="outlined" severity="success">Your book has been succesfully created</Alert>
+      </Stack>
+    </Box>
+  )
 }
 
 export default CreateBookView;
