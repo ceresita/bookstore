@@ -11,10 +11,9 @@ import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTheme } from "@mui/material/styles";
 
-function CreateBookView() {
+function CreateBookView(props) {
   const [authors, setAuthors] = useState([]);
   const { handleSubmit, reset, control } = useForm();
-  const [savedSuccesfully, setSavedSuccesfully] = useState(false);
   const theme = useTheme();
 
   useEffect(() => {
@@ -25,19 +24,11 @@ function CreateBookView() {
       });
   }, []);
 
-  function postBook(book) {
-    fetch("http://localhost:3500/books", {
-      method: "POST",
-      body: JSON.stringify(book),
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-    }).then(() => setSavedSuccesfully(true));
-  }
-
   const bookView = (
     <>
       <Box
         component="form"
-        onSubmit={handleSubmit(postBook)}
+        onSubmit={handleSubmit(props.postBook)}
         sx={{ display: "flex", flexDirection: "column", maxWidth: "35%" }}
       >
         <Typography variant="h6">Book:</Typography>
@@ -86,7 +77,7 @@ function CreateBookView() {
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <TextField
               select
-              label="Choose author:"
+              label="Author"
               onChange={onChange}
               value={value}
               error={error !== undefined}
@@ -98,17 +89,6 @@ function CreateBookView() {
                 </MenuItem>
               ))}
             </TextField>
-          )}
-        />
-        <Controller
-          name="avatarUrl"
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: false,
-          }}
-          render={({ field: { onChange, value } }) => (
-            <TextField onChange={onChange} value={value} label="Avatar URL" />
           )}
         />
         <Box
@@ -138,14 +118,14 @@ function CreateBookView() {
     </>
   );
 
-  return savedSuccesfully == false ? (
+  return props.errorSaving == false ? (
     bookView
   ) : (
     <Box>
       {bookView}
       <Stack sx={{ width: "30%" }} spacing={2} marginTop="15px">
-        <Alert variant="outlined" severity="success">
-          Your book has been succesfully created
+        <Alert variant="outlined" severity="error">
+          An error has ocurred
         </Alert>
       </Stack>
     </Box>
