@@ -14,7 +14,7 @@ import { useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CreateBookView from "./CreateBookView";
-import TablePagination from '@mui/material/TablePagination';
+import TablePagination from "@mui/material/TablePagination";
 
 function BookListView() {
   const [books, setBooks] = useState([]);
@@ -75,11 +75,12 @@ function BookListView() {
       method: "POST",
       body: JSON.stringify(book),
       headers: { "Content-type": "application/json; charset=UTF-8" },
-    }).catch(() => setErrorSaving(true))
+    })
+      .catch(() => setErrorSaving(true))
       .then(() => fetchData());
   }
 
-  const booksInPage = books.slice(page * rowsPerPage, rowsPerPage * (page + 1))
+  const booksInPage = books.slice(page * rowsPerPage, rowsPerPage * (page + 1));
   const bookList = (
     <Box>
       <TableContainer component={Paper}>
@@ -112,13 +113,13 @@ function BookListView() {
                     </IconButton>
                   </StyledTableCell>
                 </StyledTableRow>
-              )))}
+              ))
+            )}
           </TableBody>
-
         </Table>
       </TableContainer>
     </Box>
-  )
+  );
 
   const pagination = (
     <TablePagination
@@ -139,14 +140,14 @@ function BookListView() {
         <Button
           variant="contained"
           sx={{ backgroundColor: theme.palette.primary.light }}
-          onClick={() => { setAdding(true) }}
+          onClick={() => {
+            setAdding(true);
+          }}
         >
           Add a new book
         </Button>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        {pagination}
-      </Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>{pagination}</Box>
     </Box>
   ) : (
     <Box>
@@ -155,21 +156,19 @@ function BookListView() {
         <Button
           variant="contained"
           sx={{ backgroundColor: theme.palette.primary.light }}
-          onClick={() => { setAdding(false) }}
+          onClick={() => {
+            setAdding(false);
+          }}
         >
           Add a new book
         </Button>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        {pagination}
-      </Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>{pagination}</Box>
       <Box sx={{ marginTop: "5px" }}>
-        <CreateBookView
-          postBook={postBook}
-          errorSaving={errorSaving} />
+        <CreateBookView postBook={postBook} errorSaving={errorSaving} />
       </Box>
     </Box>
-  )
+  );
 }
 
 export default BookListView;
