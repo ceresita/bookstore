@@ -1,2 +1,2 @@
-# bookstore
-A bookstore as a project to learn React.js with leusgalvan as the professor.
+# Bookstore project
+A bookstore project made with React.js and Material UI with leusgalvan as the professor.
